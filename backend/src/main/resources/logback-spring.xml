@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    LifeScale 后端日志配置（Logback）。
+    - 控制台：彩色输出，开发友好
+    - 文件：logs/lifescale-backend.log，按天 + 100MB 滚动，保留 30 天，总上限 3GB
+    - 格式含 MDC requestId，便于串联同一请求的全部日志
+-->
+<configuration>
+
+    <!-- 属性：通过 Spring Boot 的 logback-spring 扩展读取 application.yml 中的应用名 -->
+    <springProperty scope="context" name="appName" source="spring.application.name"
+                    defaultValue="lifescale-backend"/>
+
+    <!-- ============ 转换规则：彩色 ============ -->
+    <conversionRule conversionWord="clr"
+                    converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+
+    <!-- ============ 通用日志格式 ============ -->
+    <property name="logPattern"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%clr(%-5level)] [%thread] [%X{requestId:-}] %logger{40} - %msg%n"/>
+    <property name="fileLogPattern"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] [%X{requestId:-}] %logger{40} - %msg%n"/>
+
+    <!-- ============ 控制台 Appender ============ -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${logPattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- ============ 滚动文件 Appender ============ -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/${appName}.log</file>
+        <encoder>
+            <pattern>${fileLogPattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- 按天 + 大小双重滚动：每天一个归档，单文件超 100MB 也滚动 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/${appName}.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- ============ 默认 profile：控制台 INFO + 文件 INFO ============ -->
+    <springProfile name="!local">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+        <!-- 框架噪音降噪：避免淹没业务日志 -->
+        <logger name="org.springframework" level="WARN"/>
+        <logger name="org.hibernate" level="WARN"/>
+        <logger name="org.apache.catalina" level="WARN"/>
+        <logger name="org.flywaydb" level="INFO"/>
+    </springProfile>
+
+    <!-- ============ local profile：控制台 DEBUG，开发排查用 ============ -->
+    <springProfile name="local">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+        <!-- 业务包 DEBUG，便于本地排查业务链路。 -->
+        <logger name="com.lifescale.backend" level="DEBUG"/>
+        <logger name="org.springframework.web" level="DEBUG"/>
+        <!-- Hibernate SQL/参数绑定降级：TRACE 全开会让文件日志几小时内涨到数 GB，
+             本地排查需要时再临时打开这两行。 -->
+        <logger name="org.hibernate.SQL" level="WARN"/>
+        <logger name="org.hibernate.orm.jdbc.bind" level="WARN"/>
+        <logger name="org.springframework" level="WARN"/>
+    </springProfile>
+
+</configuration>

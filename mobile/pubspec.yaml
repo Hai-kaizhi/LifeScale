@@ -1,0 +1,71 @@
+name: lifescale_mobile
+description: "LifeScale 移动端"
+publish_to: "none"
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.8.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # 国际化（DatePicker / 文案中文化）
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+
+  # 状态管理（手写 Notifier，未启用 riverpod_generator，降低 codegen 风险）
+  flutter_riverpod: ^2.6.1
+
+  # 路由
+  go_router: ^14.6.2
+
+  # 网络
+  dio: ^5.7.0
+
+  # 模型与序列化（代码生成）
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+
+  # 本地存储
+  sqflite: ^2.4.1
+  path_provider: ^2.1.5
+  path: ^1.9.0
+  flutter_secure_storage: ^9.2.2
+  shared_preferences: ^2.3.3
+
+  # 工具
+  crypto: ^3.0.5
+  uuid: ^4.5.1
+  collection: ^1.18.0
+
+  # 阶段八：附件 —— 笔记编辑器选择图片插入（轻量上传）
+  image_picker: ^1.1.2
+
+  # 阶段九：离线队列 —— 网络状态监听，联网恢复后自动补推 dirty 记录
+  connectivity_plus: ^6.1.1
+
+  # 笔记编辑器 WYSIWYG —— Typora 风格所见即所得，支持 Markdown 双向序列化
+  appflowy_editor: ^6.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+  build_runner: ^2.4.13
+  freezed: ^2.5.7
+  json_serializable: ^6.8.0
+  path_provider_platform_interface: ^2.1.2
+  sqflite_common_ffi: ^2.3.4+4
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/phase1/splash/
+    - assets/images/phase1/auth/
+    - assets/images/phase1/today/
+    - assets/icons/brand/
+    - assets/icons/auth/

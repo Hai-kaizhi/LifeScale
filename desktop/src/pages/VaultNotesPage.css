@@ -1,0 +1,325 @@
+.vault-notes-page {
+  min-height: calc(100vh - 110px);
+}
+
+.vault-notes-main {
+  min-height: 0;
+  border: 1px solid rgba(215, 224, 240, 0.86);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 24px 58px rgba(31, 42, 68, 0.08);
+}
+
+.vault-notes-main {
+  min-height: calc(100vh - 110px);
+  overflow: hidden;
+}
+
+.vault-notes-empty-state,
+.vault-notes-missing {
+  min-height: calc(100vh - 160px);
+  display: grid;
+  place-items: center;
+}
+
+.vault-folder-view,
+.vault-editor-shell {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.vault-folder-view-header,
+.vault-editor-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 24px 26px 18px;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.86);
+  background:
+    radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 30%),
+    rgba(248, 251, 255, 0.72);
+}
+
+.vault-folder-view-header {
+  align-items: center;
+  padding: 18px 24px 14px;
+  background: #fff;
+}
+
+.vault-folder-view-copy,
+.vault-editor-copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.vault-folder-breadcrumb,
+.vault-editor-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 10px;
+}
+
+.vault-folder-breadcrumb-link,
+.vault-editor-breadcrumb-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 760;
+  cursor: pointer;
+}
+
+.vault-folder-view h2,
+.vault-editor-header h2 {
+  margin: 0;
+  color: #111c34;
+  font-size: 26px;
+  font-weight: 860;
+  line-height: 1.15;
+}
+
+.vault-folder-view p,
+.vault-editor-header p {
+  margin: 8px 0 0;
+  color: #66728a;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.vault-folder-view .vault-editor-title-input {
+  font-size: 24px;
+}
+
+.vault-editor-title-row {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.vault-editor-title-input {
+  min-width: 0;
+  flex: 1;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #111c34;
+  font-size: 29px;
+  font-weight: 860;
+  line-height: 1.15;
+  transition: background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.vault-editor-title-input:hover {
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.vault-editor-title-input:focus {
+  outline: 0;
+  background: #fff;
+  box-shadow:
+    inset 0 0 0 1px rgba(37, 99, 235, 0.18),
+    0 0 0 4px rgba(37, 99, 235, 0.08);
+}
+
+.vault-editor-title-ext {
+  flex: 0 0 auto;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(226, 232, 240, 0.82);
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 760;
+}
+
+.vault-editor-saving {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  margin-top: 10px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(219, 234, 254, 0.92);
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: 760;
+}
+
+.vault-folder-table-wrap {
+  min-height: 0;
+  flex: 1;
+  padding: 14px 18px 22px;
+}
+
+.vault-folder-bulkbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(191, 219, 254, 0.84);
+  border-radius: 12px;
+  background: rgba(239, 246, 255, 0.92);
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 760;
+}
+
+.vault-folder-table .ant-table {
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.vault-folder-table .ant-table-thead > tr > th {
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.vault-folder-table .ant-table-tbody > tr > td {
+  color: #334155;
+  font-size: 13px;
+}
+
+.vault-folder-table .vault-folder-name-column {
+  min-width: 180px;
+  max-width: 360px;
+}
+
+.vault-folder-name-cell {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.vault-folder-name-icon {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  color: #475569;
+  font-size: 16px;
+}
+
+.vault-folder-name-icon.is-file {
+  color: #64748b;
+}
+
+.vault-folder-name-button {
+  flex: 1 1 auto;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #17223a;
+  font-size: 14px;
+  font-weight: 720;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.vault-folder-name-button:hover {
+  color: #2563eb;
+}
+
+.vault-folder-name-edit {
+  flex: 1 1 auto;
+  max-width: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vault-folder-name-edit .ant-input {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+}
+
+.vault-folder-name-ext {
+  flex: 0 0 auto;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 760;
+}
+
+.vault-folder-status-tag {
+  margin-inline-end: 0;
+  font-weight: 760;
+}
+
+.vault-folder-actions {
+  white-space: nowrap;
+}
+
+.vault-folder-empty {
+  padding: 28px 0;
+}
+
+.vault-editor-content {
+  min-height: 0;
+  flex: 1;
+  padding: 18px 20px 22px;
+}
+
+.vault-editor-loading {
+  min-height: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 760;
+}
+
+@media (max-width: 720px) {
+  .vault-folder-view-header,
+  .vault-editor-header {
+    flex-direction: column;
+    padding: 18px 18px 14px;
+  }
+
+  .vault-folder-table-wrap {
+    padding: 12px;
+  }
+
+  .vault-folder-bulkbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .vault-folder-actions {
+    display: flex;
+    flex-wrap: wrap;
+    white-space: normal;
+  }
+
+  .vault-folder-name-edit .ant-input {
+    width: 180px;
+  }
+
+  .vault-editor-content {
+    padding: 14px;
+  }
+
+  .vault-editor-title-input {
+    font-size: 24px;
+  }
+}

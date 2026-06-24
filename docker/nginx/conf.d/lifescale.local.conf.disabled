@@ -1,0 +1,56 @@
+# ============================================================================
+# LifeScale 本地验证用 nginx 配置（HTTP only，无 SSL）
+# ----------------------------------------------------------------------------
+# 用途：在本地 Docker（环境②）验证 nginx 反代 backend 链路是否通。
+#       本地不需要真实域名 + SSL 证书，用这个简化配置即可。
+#
+# 使用方法：
+#   1. 先禁用生产配置：mv lifescale.conf lifescale.conf.disabled
+#   2. 启用本配置：    mv lifescale.local.conf.disabled lifescale.local.conf
+#   3. 启动：          docker compose -f docker-compose.full.yml up -d
+#   4. 验证：          curl http://localhost/api/health   （走 nginx:80 → backend:8080）
+#   5. 验证完恢复：    mv lifescale.local.conf lifescale.local.conf.disabled
+#                     mv lifescale.conf.disabled lifescale.conf
+#
+# 文件名带 .disabled 后缀 = nginx 默认不会加载（nginx 只加载 *.conf）
+# ============================================================================
+
+upstream lifescale_backend_local {
+    server backend:8080;
+}
+
+server {
+    listen 80;
+    server_name _;
+
+    # 健康检查
+    location = /api/health {
+        proxy_pass http://lifescale_backend_local;
+        proxy_set_header Host $host;
+        access_log off;
+    }
+
+    # API 反代（本地不限流，方便压测/调试）
+    location /api/ {
+        proxy_pass http://lifescale_backend_local;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Swagger（本地方便调试，保留）
+    location /swagger-ui/ {
+        proxy_pass http://lifescale_backend_local;
+        proxy_set_header Host $host;
+    }
+    location /v3/api-docs {
+        proxy_pass http://lifescale_backend_local;
+        proxy_set_header Host $host;
+    }
+
+    location = / {
+        return 200 'LifeScale API (local nginx) is running. See /api/health\n';
+        add_header Content-Type text/plain;
+    }
+}

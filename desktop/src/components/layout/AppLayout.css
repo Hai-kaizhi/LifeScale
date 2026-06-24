@@ -1,0 +1,67 @@
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 58% 18%, rgba(22, 119, 255, 0.06), transparent 34%),
+    linear-gradient(135deg, #f8fbff 0%, #f5f7fb 58%, #f9fbff 100%);
+}
+
+.app-layout-main {
+  flex: 1;
+  min-width: 0;
+  height: 100vh;
+  /* 内边距随窗口宽度流畅缩放：宽屏放大留白，缩到最小收紧到可读下限 */
+  padding: clamp(20px, 2.6vw, 42px) clamp(18px, 1.8vw, 30px) clamp(18px, 2vw, 32px)
+    clamp(20px, 2.6vw, 42px);
+  overflow-y: auto;
+}
+
+/* 侧边栏右边缘拖拽手柄：拖动改宽，双击恢复默认宽度 */
+.sidebar-resizer {
+  position: relative;
+  flex: 0 0 6px;
+  width: 6px;
+  height: 100vh;
+  margin-left: -1px;
+  cursor: col-resize;
+  background: transparent;
+  z-index: 5;
+  transition: background 0.15s ease;
+}
+
+.sidebar-resizer:hover,
+.sidebar-resizer:active {
+  background: rgba(22, 119, 255, 0.18);
+}
+
+.sidebar-resizer.is-disabled {
+  display: none;
+  pointer-events: none;
+}
+
+@media (max-width: 1279px) {
+  .app-layout-main {
+    padding: 34px 26px 28px;
+  }
+}
+
+@media (max-width: 900px) {
+  .app-layout {
+    flex-direction: column;
+    min-height: 100vh;
+    overflow: auto;
+  }
+
+  .app-layout-main {
+    height: auto;
+    min-height: 0;
+    padding: 24px 18px;
+    overflow: visible;
+  }
+
+  /* 窄屏侧边栏改为顶部栏，隐藏拖拽手柄 */
+  .sidebar-resizer {
+    display: none;
+  }
+}

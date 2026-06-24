@@ -1,0 +1,99 @@
+# ============================================================================
+# LifeScale code 仓库 .gitignore
+# 仓库根 = code/，路径相对于本文件（无 code/ 前缀）
+# ============================================================================
+
+# ---- Environment（环境变量，永不入库）----
+.env
+.env.local
+.env.*.local
+!.env.example
+!.env.production.example
+!.env.staging.example
+
+# ---- Logs（日志）----
+*.log
+logs/
+
+# ---- OS and editors ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ---- AI 协作本地配置（私有，不入库）----
+.claude/
+CLAUDE.md
+
+# ---- Node / pnpm / Vite（桌面端）----
+node_modules/
+dist/
+.vite/
+.turbo/
+pnpm-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ---- Tauri / Rust（桌面端）----
+target/
+**/src-tauri/target/
+**/src-tauri/gen/
+desktop/vite-*.log                   # 多端口调试残留日志
+desktop/src-tauri/WixTools/
+
+# ---- Java / Maven（后端）----
+**/target/
+.mvn/timing.properties
+backend/logsbackend.log              # 疑似拼写错误的孤立日志
+
+# ---- Flutter / Dart（移动端构建产物）----
+mobile/build/
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+mobile/android/.gradle/
+mobile/android/.kotlin/
+mobile/android/captures/
+mobile/android/local.properties
+mobile/android/key.properties        # 签名配置，绝不入库
+mobile/*.keystore
+mobile/*.jks
+mobile/build_debug.log
+
+# ---- 后端运行时数据（含用户隐私！CAS 存的是真实笔记正文）----
+backend/data/
+backend/logs/
+
+# ---- Docker 编排 ----
+docker/docker-data/
+
+# ---- 备份与数据导出（绝不入库）----
+backup/
+*.dump
+*.sql.gz
+*.sql.bz2
+
+# ---- 顶层临时/调试垃圾文件 ----
+.tmp_*
+**/nul                                   # Windows 误重定向产生的伪文件
+
+# ---- 移动端临时诊断脚本（调试残留）----
+mobile/diag*.ps1
+mobile/checkbackend.ps1
+logs/_h.ps1
+
+# ---- 本地签名与密钥 ----
+*.p12
+*.pfx
+secrets/
+
+# ---- nginx SSL 证书与日志（绝不入库）----
+# 证书由宝塔/certbot 申请，放在 docker/nginx/certs/，含私钥
+docker/nginx/certs/
+docker/nginx/logs/
+*.pem
+*.crt
+*.key

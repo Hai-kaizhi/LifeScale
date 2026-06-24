@@ -1,0 +1,139 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  # 默认使用本地开发配置，后续环境可通过 SPRING_PROFILES_ACTIVE 覆盖。
+  application:
+    name: lifescale-backend
+  profiles:
+    default: local
+  # 第 0 步只建立连接边界，不自动创建业务表结构。
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:15432}/${POSTGRES_DB:lifescale}
+    username: ${POSTGRES_USER:lifescale}
+    password: ${POSTGRES_PASSWORD:lifescale_local_password}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+  data:
+    # Redis 当前仅作为同步锁和缓存预留，不在第 0 步引入复杂队列。
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:16379}
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    baseline-version: 0
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  sql:
+    init:
+      mode: never
+  # 附件上传（/api/vault/attachments）：放开单文件/请求体积上限。
+  servlet:
+    multipart:
+      max-file-size: ${LIFESCALE_ATTACHMENT_MAX_FILE:20MB}
+      max-request-size: ${LIFESCALE_ATTACHMENT_MAX_REQUEST:25MB}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+# 日志：logback-spring.xml 负责输出格式与滚动策略，此处仅设级别与默认文件
+# 业务包默认 INFO，可在 local profile 下由 logback-spring.xml 覆盖为 DEBUG
+logging:
+  file:
+    name: logs/lifescale-backend.log
+  level:
+    root: INFO
+    com.lifescale.backend: INFO
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+# 业务配置
+lifescale:
+  storage:
+    # 服务器 Markdown 镜像存储根目录：DB 的 server_md_root 为空时回退到此；两者都为空则不启用服务器落盘（向后兼容）。
+    # 本地开发可指向项目内目录，如 ${LIFESCALE_SERVER_MD_ROOT:./code/markdown-cloud}
+    server-md-root: ${LIFESCALE_SERVER_MD_ROOT:}
+    # Vault 内容寻址存储（CAS）根目录：按 hash 存 Markdown/附件正文，<root>/<hash前2位>/<hash>.md。
+    cas-root: ${LIFESCALE_CAS_ROOT:./data/vault-cas}
+    # 腾讯云 COS（附件专用，混合方案）。bucket 为空时回退磁盘 CAS（本地开发零侵入）。
+    cos:
+      secret-id: ${LIFESCALE_COS_SECRET_ID:}
+      secret-key: ${LIFESCALE_COS_SECRET_KEY:}
+      region: ${LIFESCALE_COS_REGION:ap-shanghai}
+      bucket: ${LIFESCALE_COS_BUCKET:}              # 完整桶名，如 lifescale-attachments-1250000000
+      cdn-domain: ${LIFESCALE_COS_CDN_DOMAIN:}      # 可选，CDN 加速域名
+      prefix: ${LIFESCALE_COS_PREFIX:att}           # COS 内路径前缀，默认 att（与磁盘 CAS 对齐）
+  auth:
+    # JWT 签名密钥（HS256，需 ≥32 字节）。生产务必通过 LIFESCALE_JWT_SECRET 注入强随机值。
+    # 留意：JwtService / BootstrapDefaultUserRunner 均读取此 key；生产 profile 会在空值/已知弱默认时 fail-fast。
+    jwt-secret: ${LIFESCALE_JWT_SECRET:lifescale-local-dev-jwt-secret-please-change-in-production-at-least-32-bytes}
+    # JWT 有效期（小时），默认 7 天（生产 profile 覆盖为 24h）。
+    jwt-ttl-hours: ${LIFESCALE_JWT_TTL_HOURS:168}
+    bootstrap:
+      # 首启兜底：当不存在该用户名时自动创建，避免单用户 MVP 被锁。生产请改强密码。
+      username: ${LIFESCALE_BOOTSTRAP_USERNAME:lifescale}
+      password: ${LIFESCALE_BOOTSTRAP_PASSWORD:lifescale}
+    # 邀请码注册加固（P0-7）。enabled=false 时 /api/auth/register 不校验邀请码（local 默认，保持旧行为）；
+    # prod profile 覆盖为 true，陌生人必须持有效邀请码才能注册。
+    invite-code:
+      enabled: ${LIFESCALE_INVITE_CODE_ENABLED:false}
+      ttl-days: ${LIFESCALE_INVITE_CODE_TTL_DAYS:7}
+  # 接口限流（P0-9，基于 Redis 计数）。Redis 不可用时自动降级放行。
+  rate-limit:
+    enabled: ${LIFESCALE_RATE_LIMIT_ENABLED:true}
+    login-per-minute: 5           # POST /api/auth/login，同 IP
+    register-per-minute: 3        # POST /api/auth/register，同 IP
+    attachment-per-minute: 30     # POST /api/vault/attachments，同用户
+    default-per-minute: 100       # 其他 /api/**，同用户（未登录则同 IP）
+
+# ============================ 生产 profile ============================
+# SPRING_PROFILES_ACTIVE=prod 时本段覆盖默认段同 key。
+# 注意：所有外部依赖（数据源/Redis/JWT/COS/邀请码）在 prod 段均无默认值，缺失即 fail-fast（避免误用 local 弱默认）。
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}              # 如 jdbc:postgresql://localhost:5432/lifescale
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    hikari:
+      maximum-pool-size: 10                    # 生产调大（local 默认 5）
+      minimum-idle: 2
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST}
+      port: ${SPRING_DATA_REDIS_PORT}
+      password: ${SPRING_DATA_REDIS_PASSWORD}
+      timeout: 3000ms
+
+lifescale:
+  auth:
+    jwt-secret: ${LIFESCALE_JWT_SECRET}        # 无默认值：prod 下缺失即 fail-fast（JwtService 启动校验）
+    jwt-ttl-hours: ${LIFESCALE_JWT_TTL_HOURS:24}  # 生产缩短到 24 小时
+    invite-code:
+      enabled: true                            # prod 强制邀请码注册（与 P0-7 加固目标一致）
+      ttl-days: ${LIFESCALE_INVITE_CODE_TTL_DAYS:7}
+  rate-limit:
+    enabled: true                              # prod 强制开启限流
+
+logging:
+  level:
+    root: WARN
+    com.lifescale.backend: INFO

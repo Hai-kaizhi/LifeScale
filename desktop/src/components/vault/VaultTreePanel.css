@@ -1,0 +1,269 @@
+.vault-tree-panel {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.vault-tree-toolbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.vault-tree-toolbar-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.vault-tree-title {
+  color: #111c34;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.vault-tree-sync-badge {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(226, 232, 240, 0.92);
+  color: #475569;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.vault-tree-sync-badge.is-syncing {
+  background: rgba(219, 234, 254, 0.96);
+  color: #2563eb;
+}
+
+.vault-tree-sync-badge.is-pending {
+  background: rgba(254, 243, 199, 0.96);
+  color: #b45309;
+}
+
+.vault-tree-sync-badge.is-offline,
+.vault-tree-sync-badge.is-error {
+  background: rgba(254, 226, 226, 0.96);
+  color: #b91c1c;
+}
+
+.vault-tree-toolbar-create.ant-btn {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  color: #4f5f79;
+}
+
+.vault-tree-toolbar-create.ant-btn:hover {
+  background: rgba(22, 119, 255, 0.08);
+  color: #1677ff;
+}
+
+.vault-tree-scroll {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.vault-tree-loading {
+  padding: 6px 4px 2px;
+}
+
+.vault-tree-empty {
+  padding: 18px 0 4px;
+}
+
+.vault-tree-row {
+  position: relative;
+  min-height: 34px;
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+  padding-right: 4px;
+  border-radius: 10px;
+}
+
+.vault-tree-row:hover,
+.vault-tree-row.is-selected {
+  background: rgba(226, 232, 240, 0.7);
+}
+
+.vault-tree-row.is-selected {
+  background: rgba(219, 234, 254, 0.94);
+  box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.12);
+}
+
+.vault-tree-caret {
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #64748b;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.vault-tree-caret:hover {
+  background: rgba(148, 163, 184, 0.16);
+}
+
+.vault-tree-caret.is-empty {
+  cursor: default;
+}
+
+.vault-tree-main {
+  min-width: 0;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vault-tree-main-trigger {
+  min-width: 0;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #17223a;
+  text-align: left;
+  cursor: pointer;
+}
+
+.vault-tree-main-label-trigger {
+  flex: 1;
+}
+
+.vault-tree-icon {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  font-size: 15px;
+  flex: 0 0 auto;
+}
+
+.vault-tree-icon.is-folder {
+  color: #334155;
+}
+
+.vault-tree-icon.is-file {
+  color: #64748b;
+}
+
+.vault-tree-label {
+  min-width: 0;
+  overflow: hidden;
+  color: #17223a;
+  font-size: 14px;
+  font-weight: 560;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vault-tree-inline-rename {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vault-tree-inline-input.ant-input-affix-wrapper,
+.vault-tree-inline-input.ant-input {
+  min-width: 0;
+  border-radius: 10px;
+  border-color: rgba(37, 99, 235, 0.2);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: none;
+}
+
+.vault-tree-inline-input.ant-input-affix-wrapper:focus,
+.vault-tree-inline-input.ant-input-affix-wrapper-focused,
+.vault-tree-inline-input.ant-input:focus {
+  border-color: rgba(37, 99, 235, 0.35);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+.vault-tree-inline-ext {
+  flex: 0 0 auto;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(226, 232, 240, 0.82);
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 760;
+}
+
+.vault-tree-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.16s ease;
+}
+
+.vault-tree-row:hover .vault-tree-actions,
+.vault-tree-row.is-selected .vault-tree-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.vault-tree-row.is-editing .vault-tree-actions {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.vault-tree-action-button {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #64748b;
+  cursor: pointer;
+}
+
+.vault-tree-action-button:hover {
+  background: #fff;
+  color: #1677ff;
+}
+
+.vault-tree-children {
+  display: flex;
+  flex-direction: column;
+}
+
+.vault-tree-rename-form {
+  display: grid;
+  gap: 8px;
+}
+
+.vault-tree-rename-label {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+}
