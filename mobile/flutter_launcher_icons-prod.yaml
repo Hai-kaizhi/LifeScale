@@ -1,0 +1,14 @@
+# flutter_launcher_icons 配置 —— 正式版（prod flavor）
+# 源图：assets/icons/brand/app_icon_source_1024.png（白底蓝色笑脸）
+# 生成：dart run flutter_launcher_icons -f flutter_launcher_icons-prod.yaml
+#
+# 说明：正式版图标直接写入 main 源集的 mipmap-*，被 prod flavor 使用。
+# Android adaptive icon 关闭（remove_alpha_ios / 不配 adaptive_icon_background），
+# 让图标保持白色满铺背景，由系统自动裁圆角。
+
+flutter_launcher_icons:
+  image_path: "assets/icons/brand/app_icon_source_1024.png"
+  android: true
+  ios: false
+  min_sdk_android: 24
+  remove_alpha_ios: true

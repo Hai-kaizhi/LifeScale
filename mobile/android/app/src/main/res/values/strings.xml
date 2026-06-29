@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 应用名兜底默认值；实际值由 build.gradle.kts 的 productFlavors 通过 resValue 注入：
+         prod → "LifeScale"，beta → "LifeScale 测试版" -->
+    <string name="app_name">LifeScale</string>
+</resources>

@@ -1,0 +1,5 @@
+# Cargo 生成目录，包含编译产物和可执行文件。
+/target/
+
+# Tauri 生成目录，包含能力配置自动补全所需的 schema 文件。
+/gen/schemas

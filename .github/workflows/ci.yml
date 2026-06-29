@@ -1,0 +1,66 @@
+# LifeScale 持续集成 —— 客户端测试（桌面端 + 移动端）
+# 触发：push 到 main/develop + 任意 PR
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  # ============================================================
+  # 桌面端：Tauri + React + TypeScript + pnpm (vitest)
+  # ============================================================
+  desktop:
+    name: Desktop (pnpm)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: desktop
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run tests
+        run: pnpm test:run      # vitest run（一次性，非 watch；CI 用）
+
+  # ============================================================
+  # 移动端：Flutter (dart test)
+  # ============================================================
+  mobile:
+    name: Mobile (Flutter)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+        continue-on-error: true   # 分析告警不阻断（项目初期）
+
+      - name: Run tests
+        run: flutter test

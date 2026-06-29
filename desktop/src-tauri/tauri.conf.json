@@ -1,0 +1,49 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "LifeScale",
+  "version": "0.1.0",
+  "identifier": "com.lifescale.desktop",
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "devUrl": "http://localhost:5173",
+    "beforeBuildCommand": "pnpm build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "LifeScale",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 1040,
+        "minHeight": 680,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "publisher": "LifeScale",
+    "category": "Productivity",
+    "shortDescription": "本地优先的 Markdown Vault 多端同步应用",
+    "longDescription": "LifeScale 是一个本地优先（Local-First）的 Markdown Vault 多端同步应用。本地 Markdown 文件是真相源，支持桌面端、移动端、云端三端，离线可用，登录后自动云同步。",
+    "copyright": "© 2026 LifeScale",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "nsis": {
+        "displayLanguageSelector": true,
+        "languages": ["SimpChinese", "English"]
+      }
+    }
+  }
+}

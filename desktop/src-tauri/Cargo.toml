@@ -1,0 +1,31 @@
+[package]
+name = "lifescale-desktop"
+version = "0.1.0"
+description = "LifeScale 桌面端工程底座"
+authors = ["LifeScale"]
+edition = "2021"
+
+# 更多 Cargo 配置项见：https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+# `_lib` 后缀用于避免 Windows 下库名与二进制名冲突。
+# 相关背景见：https://github.com/rust-lang/cargo/issues/8519
+name = "lifescale_desktop_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# Vault 本地优先同步：文件夹监听 + 本地隐藏索引(SQLite) + 内容哈希 + 递归扫描
+notify = "6"
+rusqlite = { version = "0.31", features = ["bundled"] }
+sha2 = "0.10"
+walkdir = "2"
+thiserror = "1"
+# 附件字节经 Tauri invoke 桥传输：base64 编解码（serde_json 不支持原始字节）。
+base64 = "0.22"

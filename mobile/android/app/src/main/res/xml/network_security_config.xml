@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  LifeScale 移动端网络安全配置：
+  后端本地开发为 http:// 明文（Spring Boot 8080）。
+  - 模拟器经 10.0.2.2 访问宿主机回环；
+  - 真机经宿主机 LAN IP（192.168.x.x / 10.x / 172.16-31 段）访问；
+  故开发态直接用 base-config 对全部主机放通明文流量（API base 由 run.bat 经
+  编译期 dart define 参数注入，例如 http://192.168.1.7:8080/api）。
+  注意：Android 的 <domain> 是字面主机名/精确 IP 匹配，不是 CIDR；此前用
+  192.168.0.0 等"网段"作 <domain> 无法匹配 192.168.1.7，会误拦明文请求。
+  生产环境应切换 HTTPS 并收紧此配置（移除 cleartextTrafficPermitted）。
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

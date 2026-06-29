@@ -1,0 +1,104 @@
+# ============================================================================
+# LifeScale 开源仓库 .gitignore
+# ----------------------------------------------------------------------------
+# 仓库根 = lifescale/。
+#
+# 设计理念（重要）：
+#   本仓库是【开源代码仓】，真实密钥/内部文档/打包产物/运行时数据
+#   统一放在仓库目录之外的 workspace/（物理隔离）。
+#   因此本 .gitignore 主要负责「双保险」——即便误把产物/密钥拷进来也不入库。
+#
+# 安全红线（无论是否在此列出，都绝不入库）：
+#   - 真实 .env（含 COS/JWT/DB 密码）→ 只能在 workspace/envs/<env>/.env
+#   - 签名密钥、SSL 证书（.keystore/.p12/.pem/.key）
+#   - 后端运行时数据 backend/data/（CAS 存的是真实用户笔记正文，含隐私！）
+# ============================================================================
+
+# ---- Environment（环境变量，永不入库；只保留 .example 模板）----
+.env
+.env.local
+.env.*.local
+!.env.example
+!.env.production.example
+!.env.staging.example
+
+# ---- Logs（日志）----
+*.log
+logs/
+
+# ---- OS and editors ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ---- AI 协作本地配置（私有，不入库）----
+.claude/
+CLAUDE.md
+
+# ---- Node / pnpm / Vite（桌面端）----
+node_modules/
+dist/
+.vite/
+.turbo/
+pnpm-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ---- Tauri / Rust（桌面端）----
+target/
+**/src-tauri/target/
+**/src-tauri/gen/
+desktop/src-tauri/WixTools/
+
+# ---- Java / Maven（后端）----
+**/target/
+.mvn/timing.properties
+
+# ---- Flutter / Dart（移动端构建产物）----
+mobile/build/
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+mobile/android/.gradle/
+mobile/android/.kotlin/
+mobile/android/captures/
+mobile/android/local.properties
+mobile/android/key.properties        # 签名配置，绝不入库
+mobile/*.keystore
+mobile/*.jks
+
+# ---- 后端运行时数据（含用户隐私！CAS 存的是真实笔记正文）----
+backend/data/
+backend/logs/
+
+# ---- Docker 编排 ----
+docker/docker-data/
+
+# ---- 备份与数据导出（绝不入库）----
+backup/
+*.dump
+*.sql.gz
+*.sql.bz2
+
+# ---- 打包产物（APK/EXE/MSI 应输出到 workspace/release/，此规则作双保险）----
+release/
+
+# ---- 临时/调试垃圾文件 ----
+.tmp_*
+**/nul                                   # Windows 误重定向产生的伪文件
+
+# ---- 本地签名与密钥 ----
+*.p12
+*.pfx
+secrets/
+
+# ---- nginx SSL 证书与日志（绝不入库）----
+docker/nginx/certs/
+docker/nginx/logs/
+*.pem
+*.crt
+*.key
