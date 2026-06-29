@@ -58,7 +58,7 @@ android {
             //   1) keytool 生成 keystore → 放 mobile/ 下（已被 .gitignore 忽略）
             //   2) 新建 mobile/android/key.properties 填签名信息
             //   3) 把下行 signingConfig 改为读取 key.properties 的正式 signingConfig
-            // 详细步骤见 docs/12_客户端打包指南.md。
+            // 详细步骤见 docs/deployment/客户端打包指南.md。
             signingConfig = signingConfigs.getByName("debug")
             isMinifyEnabled = false
             isShrinkResources = false

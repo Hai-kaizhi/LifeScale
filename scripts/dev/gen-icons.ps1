@@ -22,7 +22,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$ROOT    = Resolve-Path "$PSScriptRoot\..\.."          # lifescale/ 仓库根
+$ROOT    = Resolve-Path "$PSScriptRoot\..\.."          # 仓库根
 $MOBILE  = Join-Path $ROOT "mobile"
 $DESKTOP = Join-Path $ROOT "desktop"
 $RunAll = (-not $AndroidOnly -and -not $DesktopOnly)

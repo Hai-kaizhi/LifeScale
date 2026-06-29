@@ -7,7 +7,7 @@
 #   .\build-android.ps1 -Version 0.2.0 -Channel beta -BuildNumber 5   # 指定构建号
 #   .\build-android.ps1 -Version 0.2.0 -Channel beta -InstallToPhone   # 打包后安装到已连接真机
 #
-# 产物归档到：<workspace>/release/android/<渠道>/（仓库目录之外，不入 git）
+# 产物归档到：<仓库根>/dist/release/android/<渠道>/（已被 .gitignore 忽略，不入 git）
 #   测试版 → lifescale-<版本>-beta-android.apk
 #   正式版 → lifescale-<版本>-android.apk
 # 同时生成 BUILD-INFO.txt（版本/时间/git commit/渠道/签名状态）。
@@ -36,10 +36,10 @@ param(
 
 # ---- 路径与常量 ----
 $ErrorActionPreference = "Stop"
-$ROOT    = Resolve-Path "$PSScriptRoot\..\.."          # lifescale/ 仓库根
+$ROOT    = Resolve-Path "$PSScriptRoot\..\.."          # 仓库根
 $MOBILE  = Join-Path $ROOT "mobile"                     # mobile 源码目录
-$WORKSPACE = Resolve-Path (Join-Path $ROOT "..")        # LifeScale-new/（工作区根，含 workspace/）
-$RELEASE_DIR = Join-Path $WORKSPACE "workspace\release\android\$Channel"
+# 产物输出到仓库内 dist/release/（已被 .gitignore 忽略，不入 git）
+$RELEASE_DIR = Join-Path $ROOT "dist\release\android\$Channel"
 $PUBSPEC = Join-Path $MOBILE "pubspec.yaml"
 
 # flavor 映射：渠道 → Gradle flavor

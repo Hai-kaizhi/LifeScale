@@ -42,26 +42,16 @@
 ## [Unreleased]
 
 > 当前开发中、尚未发布的内容。
-> 注：以下条目记录的是移除后端前的早期仓库初始化工作，其中涉及的「三端 / 云端 13 表 / backend / Flyway / Docker」等内容已在本版（1.0.0）全部移除。
 
 ### Added
-- 初始化开源仓库结构：单代码仓（`lifescale/`）+ workspace 私有资产隔离。
-- 新增 [`docs/database/schema.sql`](./docs/database/schema.sql) 作为两端表结构的**单一真相源**（本地 6 表）。
+- 初始化开源仓库结构：单代码仓 + 两公开 remote（Gitee / GitHub）。
+- 新增 [`docs/database/schema.sql`](./docs/database/schema.sql) 作为两端本地 SQLite 表结构的**单一真相源**（本地 6 表）。
 - 新增两端 CI（`.github/workflows/ci.yml`：pnpm `vitest` + Flutter `flutter test`）。
 - 新增 GitHub 开源基础设施：Issue/PR 模板、dependabot 依赖监控。
-- 重写开源技术文档（纯本地版）：架构 / 数据库 / 客户端打包指南。
+- 重写技术文档（纯本地版）：架构 / 数据库 / 客户端打包指南。
 
 ### Changed
-- **开源机制简化**：从「私有仓 → 脱敏脚本 → 两公开仓」改为「单仓两公开 remote 直推」。
-- **配置层重写**：`.gitignore` 精简；真实签名材料迁出仓库至 `workspace/secrets/`。
+- **配置层精简**：`.gitignore` 重写为纯本地应用视角；打包产物输出到仓库内 `dist/release/`（gitignore）。
 
 ### Removed
-- 删除脱敏导出脚本（`scripts/sync-to-opensource.*`）—— 单仓直推后不再需要。
-- 删除临时部署方案（`docker-compose.temp.yml`、`DEPLOY-TEMP.md`）。
-- 删除冗余资源：移动端重复图片 `pic/`、空占位目录、开发期集成记录文档。
-
----
-
-## 待发布里程碑
-
-- `v0.1.0` —— MVP 首个正式版本（当前测试收尾中，发布后填入）。
+- 删除冗余资源：移动端重复图片、空占位目录、开发期集成记录文档。

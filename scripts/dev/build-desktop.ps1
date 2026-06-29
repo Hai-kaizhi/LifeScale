@@ -6,7 +6,7 @@
 #   .\build-desktop.ps1 -Version 0.2.0 -Channel release      # 正式版（NSIS exe）
 #   .\build-desktop.ps1 -Version 0.2.0 -Channel release -IncludeMsi   # 正式版连 msi 一起打
 #
-# 产物归档到：<workspace>/release/desktop/<渠道>/（仓库目录之外，不入 git）
+# 产物归档到：<仓库根>/dist/release/desktop/<渠道>/（已被 .gitignore 忽略，不入 git）
 #   测试版 → lifescale-<版本>-beta-windows-x64-setup.exe
 #   正式版 → lifescale-<版本>-windows-x64-setup.exe（+可选 .msi）
 # 同时生成 BUILD-INFO.txt。
@@ -26,11 +26,11 @@ param(
 
 # ---- 路径与常量 ----
 $ErrorActionPreference = "Stop"
-$ROOT    = Resolve-Path "$PSScriptRoot\..\.."          # lifescale/ 仓库根
+$ROOT    = Resolve-Path "$PSScriptRoot\..\.."          # 仓库根
 $DESKTOP = Join-Path $ROOT "desktop"                    # desktop 源码目录
 $TAURI_DIR  = Join-Path $DESKTOP "src-tauri"
-$WORKSPACE  = Resolve-Path (Join-Path $ROOT "..")       # LifeScale-new/（工作区根，含 workspace/）
-$RELEASE_DIR = Join-Path $WORKSPACE "workspace\release\desktop\$Channel"
+# 产物输出到仓库内 dist/release/（已被 .gitignore 忽略，不入 git）
+$RELEASE_DIR = Join-Path $ROOT "dist\release\desktop\$Channel"
 
 # 渠道 → 版本后缀 / 产物名前缀
 $IsBeta = ($Channel -eq "beta")
